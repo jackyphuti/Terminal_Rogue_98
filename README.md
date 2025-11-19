@@ -6,6 +6,7 @@ A simple Roguelike engine written in strict C++98.
 - Manual memory management (new/delete).
 - Polymorphism (Entity -> Player).
 - No external libraries (Standard Template Library only).
+fix
 
 ## How to Run
 1. Compile:
