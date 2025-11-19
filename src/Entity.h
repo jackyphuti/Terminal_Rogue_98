@@ -4,7 +4,9 @@
 #include <iostream>
 #include <string>
 
-// Abstract Base Class
+// Forward declaration (allows us to use Map inside Entity)
+class Map;
+
 class Entity {
 protected:
     int x, y;
@@ -17,16 +19,17 @@ public:
 
     virtual ~Entity() {}
 
-    // Pure virtual function
-    virtual void update() = 0;
+    // Updated: Now takes target coordinates and the map for collision
+    virtual void update(int targetX, int targetY, const Map& map) = 0;
 
     int getX() const { return x; }
     int getY() const { return y; }
     char getIcon() const { return icon; }
+    std::string getName() const { return name; }
 
-    void move(int dx, int dy) {
-        x += dx;
-        y += dy;
+    void setPosition(int newX, int newY) {
+        x = newX;
+        y = newY;
     }
 };
 

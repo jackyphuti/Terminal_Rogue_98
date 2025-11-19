@@ -21,13 +21,16 @@ public:
         for (int y = 0; y < height; ++y) {
             std::string row = "";
             for (int x = 0; x < width; ++x) {
-                // Create borders and random obstacles
+                // Borders are always walls
                 if (x == 0 || x == width - 1 || y == 0 || y == height - 1) {
                     row += '#';
-                } else if (rand() % 10 == 0) {
-                    row += '#'; // Random wall
-                } else {
-                    row += '.'; // Floor
+                } 
+                // 10% chance of random obstacle
+                else if (rand() % 10 == 0) {
+                    row += '#'; 
+                } 
+                else {
+                    row += '.'; 
                 }
             }
             grid.push_back(row);
@@ -39,14 +42,31 @@ public:
         return grid[y][x] == '#';
     }
 
-    // Render map and overlay the player
-    void render(int pX, int pY, char pIcon) const {
+    void render(const std::vector<class Entity*>& entities, const Entity* player) const {
         for (int y = 0; y < height; ++y) {
             for (int x = 0; x < width; ++x) {
-                if (x == pX && y == pY) {
-                    std::cout << pIcon; // Draw Player
-                } else {
-                    std::cout << grid[y][x]; // Draw Map
+                bool drawn = false;
+
+                // 1. Check Player
+                if (player->getX() == x && player->getY() == y) {
+                    std::cout << player->getIcon();
+                    drawn = true;
+                }
+
+                // 2. Check Enemies
+                if (!drawn) {
+                    for (size_t i = 0; i < entities.size(); ++i) {
+                        if (entities[i]->getX() == x && entities[i]->getY() == y) {
+                            std::cout << entities[i]->getIcon();
+                            drawn = true;
+                            break;
+                        }
+                    }
+                }
+
+                // 3. Draw Map
+                if (!drawn) {
+                    std::cout << grid[y][x]; 
                 }
             }
             std::cout << std::endl;
